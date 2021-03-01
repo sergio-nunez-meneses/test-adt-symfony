@@ -39,8 +39,6 @@ Entity generated! Now let's add some fields!
 You can always add more fields later manually or by re-running this command.
 
 New property name (press <return> to stop adding fields):
-
-New property name (press <return> to stop adding fields):
 > name
 
 Field type (enter ? to see all types) [string]:
@@ -76,5 +74,8 @@ php bin/console doctrine:migrations:migrations
 ## Create controller
 
 ```
-php bin/console make:controller controller_name
+php bin/console make:controller ControllerName
+
+created: src/Controller/ControllerName.php
+created: templates/controller/index.html.twig
 ```
