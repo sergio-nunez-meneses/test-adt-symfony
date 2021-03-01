@@ -1,6 +1,12 @@
 # Symfony cheat sheet
 
-## Creating database
+## Create project
+
+```
+composer create-project symfony/website-skeleton project_name
+```
+
+## Create database
 
 Edit database information in ```.env``` file:
 
@@ -71,7 +77,33 @@ php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrations
 ```
 
-## Create controller
+## Creating fixtures data
+
+Install fixtures library:
+
+```
+composer require --dev doctrine/doctrine-fixtures-bundle
+
+```
+
+Create fixtures:
+
+```
+php bin/console make:fixtures
+
+The class name of the fixtures to create (e.g. AppFixtures):
+> ClassNameFixtures
+
+created: src/DataFixtures/ClassNameFixtures.php
+```
+
+Load fixtures:
+
+```
+php bin/console doctrine:fixtures:load
+```
+
+## Creating controllers
 
 ```
 php bin/console make:controller ControllerName

@@ -36,7 +36,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Structure::class, inversedBy="name")
+     * @ORM\ManyToOne(targetEntity=Structure::class, inversedBy="users")
      */
     private $structure;
 
