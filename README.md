@@ -28,6 +28,42 @@ php bin/console doctrine:database:create
 Run the following line and follow the instructions:
 ```
 php bin/console make:entity
+
+Class name of the entity to create or update (e.g FiercePizza):
+> ClassName
+
+created: src/Entity/ClassName.php
+created: src/Repository/ClassNameRepository.php
+
+Entity generated! Now let's add some fields!
+You can always add more fields later manually or by re-running this command.
+
+New property name (press <return> to stop adding fields):
+
+New property name (press <return> to stop adding fields):
+> name
+
+Field type (enter ? to see all types) [string]:
+> string
+
+Field length [255]:
+> 255
+
+Can this field be null in the database (nullable) (yes/no) [no]:
+> no
+
+New property name (press <return> to stop adding fields):
+> price
+
+Field type (enter ? to see all types) [string]:
+> integer
+
+Can this field be null in the database (nullable) (yes/no) [no]:
+> no
+
+New property name (press <return> to stop adding fields):
+>
+(press enter again to finish)
 ```
 
 Update database without dropping existing data:
