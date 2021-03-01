@@ -18,23 +18,6 @@ class UserFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
-    public function int_to_ordinal($i)
-    {
-      $j = $i % 10;
-      $k = $i % 100;
-
-      if ($j === 1 && $k !== 11) {
-        return $i . 'st';
-      }
-      if ($j === 2 && $k !== 12) {
-        return $i . 'nd';
-      }
-      if ($j === 3 && $k !== 13) {
-        return $i . 'rd';
-      }
-      return $i . 'th';
-    }
-
     public function load(ObjectManager $manager)
     {
         $usernames = [
@@ -57,14 +40,32 @@ class UserFixtures extends Fixture
           'ROLE_USER'
         ];
 
+        $structure_names = [
+          'My 1st structure',
+          'My 2nd structure',
+          'My 3rd structure'
+        ];
+
+        // load structures data
+        for ($i=0; $i < count($structure_names); $i++)
+        {
+          $structure = new Structure();
+          $structure->setName($structure_names[$i]);
+          $manager->persist($structure);
+        }
+
+        // save
+        $manager->flush();
+
+        // get all structures
+        $structures = $manager->getRepository(Structure::class)->findAll();
+
+        // load users data
         for ($i=0; $i < count($usernames); $i++)
         {
           $random_percentage = mt_rand(0, 100);
           $random_role = mt_rand(0, (count($roles) - 1));
-
-          // set data
-          $structure = new Structure();
-          $structure->setName('My ' . $this->int_to_ordinal($i + 1) . ' structure');
+          $random_structure = mt_rand(0, (count($structures) - 1));
 
           $user = new User();
           $user->setUsername($usernames[$i]);
@@ -76,15 +77,13 @@ class UserFixtures extends Fixture
             ($random_percentage > 60) ? $roles[$random_role] : $roles[3]
           ));
 
-          // relate this user to the structure
-          $user->setStructure($structure);
+          // relate user to structure
+          $user->setStructure($structures[$random_structure]);
 
-          // manage data
-          $manager->persist($structure);
           $manager->persist($user);
         }
 
-        // save data
+        // save
         $manager->flush();
     }
 }
