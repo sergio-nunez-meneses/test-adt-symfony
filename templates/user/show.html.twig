@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Information{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper {
+      margin: 1em auto;
+      max-width: 800px;
+      width: 95%;
+      font: 18px/1.5 sans-serif;
+    }
+</style>
+
+<div class="example-wrapper">
+    <h1>Member</h1>
+    <ul>
+        {% if user %}
+            <li>{{ user.username }}</li>
+            <li>{{ user.roles|join('') }}</li>
+        {% else %}
+            <li><em>User not found</em></li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
