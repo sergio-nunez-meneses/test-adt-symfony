@@ -83,7 +83,6 @@ Install fixtures library:
 
 ```
 composer require --dev doctrine/doctrine-fixtures-bundle
-
 ```
 
 Create fixtures:
@@ -110,4 +109,22 @@ php bin/console make:controller ControllerName
 
 created: src/Controller/ControllerName.php
 created: templates/controller/index.html.twig
+```
+
+## Creating CRUD from existing Entity
+
+```
+php bin/console make:crud
+
+The class name of the entity to create CRUD (e.g. BravePopsicle):
+> ClassName
+
+created: src/Controller/ClassNameController.php
+created: src/Form/ClassNameType.php
+created: templates/classname/_delete_form.html.twig
+created: templates/classname/_form.html.twig
+created: templates/classname/edit.html.twig
+created: templates/classname/index.html.twig
+created: templates/classname/new.html.twig
+created: templates/classname/show.html.twig
 ```

@@ -2,26 +2,43 @@
 
 namespace App\Controller;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\User;
 
+/**
+ * @Route("/user")
+ */
 class UserController extends AbstractController
 {
+    private $response;
+
     /**
-     * @Route("/user", name="user")
+     * @Route("/", name="user_index", methods={"GET"})
      */
     public function index(): Response
     {
-        return $this->render('user/index.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
+        $users = $this->getDoctrine()
+            ->getRepository(User::class)
+            ->findAll();
+
+        if (empty($users))
+        {
+            $this->response = ['error' => 'No users found.'];
+        }
+        else
+        {
+            $this->response = ['users' => $users];
+        }
+
+        return $this->render_response('index', $this->response);
     }
 
     /**
-     * @Route("/user/{id}", name="user_show")
+     * @Route("/{id}", name="user_show", methods={"GET"})
      */
     public function show(int $id): Response
     {
@@ -29,12 +46,20 @@ class UserController extends AbstractController
             ->getRepository(User::class)
             ->find($id);
 
-        if (!$user) {
-            throw $this->createNotFoundException(
-                "No user found for id $id"
-            );
+        if (!$user)
+        {
+            $this->response = ['error' => "User with id $id not found"];
+        }
+        else
+        {
+            $this->response = ['user' => $user];
         }
 
-        return $this->render('user/show.html.twig', ['user' => $user]);
+        return $this->render_response('show', $this->response);
+    }
+
+    private function render_response($view, $response)
+    {
+        return $this->render("user/$view.html.twig", $response);
     }
 }

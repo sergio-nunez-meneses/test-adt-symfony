@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper {
+            margin: 1em auto;
+            max-width: 800px;
+            width: 95%;
+            font: 18px/1.5 sans-serif;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <ul>
+            {% if users is defined %}
+                <h1>User Index</h1>
+                {% for user in users %}
+                    <li>
+                        Username: {{ user.username }}
+                        <a href="{{ path('user_show', { 'id': user.id }) }}">show</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <h1>Error</h1>
+                <li>{{ error }}</li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}

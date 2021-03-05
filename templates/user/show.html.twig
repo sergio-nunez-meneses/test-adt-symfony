@@ -1,26 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User Information{% endblock %}
+{% block title %}User{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper {
-      margin: 1em auto;
-      max-width: 800px;
-      width: 95%;
-      font: 18px/1.5 sans-serif;
-    }
-</style>
+    <style>
+        .example-wrapper {
+          margin: 1em auto;
+          max-width: 800px;
+          width: 95%;
+          font: 18px/1.5 sans-serif;
+        }
+    </style>
 
-<div class="example-wrapper">
-    <h1>Member</h1>
-    <ul>
-        {% if user %}
-            <li>{{ user.username }}</li>
-            <li>{{ user.roles|join('') }}</li>
-        {% else %}
-            <li><em>User not found</em></li>
-        {% endif %}
-    </ul>
-</div>
+    <div class="example-wrapper">
+        <ul>
+            {% if user is defined %}
+                <h1>User</h1>
+                <li>Username: {{ user.username }}</li>
+                <li>Roles:
+                    {% for role in user.roles %}
+                        {{ role }}
+                    {% endfor %}
+                </li>
+                <a href="{{ path('user_index') }}">back to list</a>
+            {% else %}
+                <h1>Error</h1>
+                <li>{{ error }}</li>
+            {% endif %}
+        </ul>
+    </div>
 {% endblock %}
