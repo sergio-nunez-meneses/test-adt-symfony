@@ -5,9 +5,11 @@
 {% block body %}
     <style>
         .example-wrapper {
-            margin: 1em auto;
+            display: flex;
+            justify-content: center;
             max-width: 800px;
             width: 95%;
+            margin: auto;
             font: 18px/1.5 sans-serif;
         }
     </style>
@@ -25,6 +27,7 @@
             {% else %}
                 <h1>Error</h1>
                 <li>{{ error }}</li>
+                <a href="{{ path('user_index') }}">back to list</a>
             {% endif %}
         </ul>
     </div>

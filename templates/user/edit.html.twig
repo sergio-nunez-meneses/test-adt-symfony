@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User{% endblock %}
+{% block title %}Edit User{% endblock %}
 
 {% block body %}
     <style>
@@ -12,23 +12,27 @@
             margin: auto;
             font: 18px/1.5 sans-serif;
         }
+
+        .input-wrapper{
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 
     <div class="example-wrapper">
         <ul>
             {% if user is defined %}
-                <h1>User</h1>
-                <li>Username: {{ user.username }}</li>
-                <li>Roles:
-                    {% for role in user.roles %}
-                        {{ role }}
-                    {% endfor %}
-                </li>
+                <h1>Update User</h1>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <div class="input-wrapper">
+                    <button>Submit</button>
+                </div>
+                {{ form_end(form) }}
             {% else %}
                 <h1>Error</h1>
                 <li>{{ error }}</li>
             {% endif %}
-            <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
             <a href="{{ path('user_index') }}">back to list</a>
         </ul>
     </div>
