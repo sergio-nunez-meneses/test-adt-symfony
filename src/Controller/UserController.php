@@ -2,13 +2,12 @@
 
 namespace App\Controller;
 
-use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\User;
-use App\Form\Type\TaskType;
+use App\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -23,7 +22,7 @@ class UserController extends AbstractController
      */
     public function index(): Response
     {
-        $users = $this->user_repository()->findAll();
+        $users = $this->user_repository('all');
 
         if (empty($users))
         {
@@ -42,7 +41,7 @@ class UserController extends AbstractController
      */
     public function show(int $id): Response
     {
-        $user = $this->user_repository()->find($id);
+        $user = $this->user_repository($id);
 
         if (!$user)
         {
@@ -61,12 +60,12 @@ class UserController extends AbstractController
      */
     public function edit(int $id) : Response
     {
-        $user = $this->user_repository()->find($id);
+        $user = $this->user_repository($id);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest(Request::createFromGlobals());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->get_entity_manager()->flush();
 
             return $this->redirectToRoute('user_index');
         }
@@ -79,10 +78,41 @@ class UserController extends AbstractController
         return $this->render_response('edit', $this->response);
     }
 
-    private function user_repository()
+    /**
+     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     */
+    public function delete(int $id) : Response
     {
-        return $this->getDoctrine()
-            ->getRepository(User::class);
+        $user = $this->user_repository($id);
+        $request = Request::createFromGlobals()->request;
+        $token = 'delete'. $user->getId();
+
+        if ($this->isCsrfTokenValid($token, $request->get('_token'))) {
+            $em = $this->get_entity_manager();
+            $em->remove($user);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('user_index');
+    }
+
+    private function get_entity_manager()
+    {
+        return $this->getDoctrine()->getManager();
+    }
+
+    private function user_repository($query)
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+
+        if (gettype($query) === 'string' && $query === 'all')
+        {
+            return $repository->findAll();
+        }
+        elseif (gettype($query) === 'integer' && $query > 0)
+        {
+            return $repository->find($query);
+        }
     }
 
     private function render_response($view, $response)
