@@ -37,6 +37,29 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/new", name="new_user", methods={"GET", "POST"})
+     */
+    public function new() : Response
+    {
+        $user = new User();
+        $form = $this->user_form($user);
+        $form->handleRequest(Request::createFromGlobals());
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->get_entity_manager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render_response('new', [
+            'user' => $user,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      */
     public function show(int $id): Response
@@ -61,7 +84,7 @@ class UserController extends AbstractController
     public function edit(int $id) : Response
     {
         $user = $this->user_repository($id);
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->user_form($user);
         $form->handleRequest(Request::createFromGlobals());
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -113,6 +136,11 @@ class UserController extends AbstractController
         {
             return $repository->find($query);
         }
+    }
+
+    private function user_form($user)
+    {
+        return $this->createForm(UserType::class, $user);
     }
 
     private function render_response($view, $response)

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}New User{% endblock %}
 
 {% block body %}
     <style>
@@ -21,13 +21,8 @@
 
     <div class="example-wrapper">
         <ul>
-            {% if user is defined %}
-                <h1>Update User</h1>
-                {{ include('user/_form.html.twig') }}
-            {% else %}
-                <h1>Error</h1>
-                <li>{{ error }}</li>
-            {% endif %}
+            <h1>Create new User</h1>
+            {{ include('user/_form.html.twig') }}
             <a href="{{ path('user_index') }}">back to list</a>
         </ul>
     </div>
